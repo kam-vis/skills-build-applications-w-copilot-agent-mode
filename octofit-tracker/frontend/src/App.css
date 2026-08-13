@@ -1,0 +1,120 @@
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #646cff !important;
+}
+
+.navbar-brand:hover {
+  color: #535bf2 !important;
+}
+
+.container-main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.nav-link {
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #646cff !important;
+}
+
+.nav-link.active {
+  color: #646cff !important;
+  border-bottom: 2px solid #646cff;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(100, 108, 255, 0.2);
+}
+
+.table-hover tbody tr:hover {
+  background-color: #323232;
+  cursor: pointer;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.loading .spinner-border {
+  color: #646cff;
+  width: 3rem;
+  height: 3rem;
+}
+
+.error-message {
+  background-color: #5a2a2a;
+  border-left: 4px solid #ff6b6b;
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.success-message {
+  background-color: #2a5a2a;
+  border-left: 4px solid #51cf66;
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background-color: #323232;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #646cff;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.badge-primary {
+  background-color: #646cff;
+}
+
+.badge-success {
+  background-color: #51cf66;
+}
+
+.badge-warning {
+  background-color: #ffa94d;
+  color: #000;
+}
+
+.badge-danger {
+  background-color: #ff8787;
+}
+
+.badge-info {
+  background-color: #74c0fc;
+  color: #000;
+}
