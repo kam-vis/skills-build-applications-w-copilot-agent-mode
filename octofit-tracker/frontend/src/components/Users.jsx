@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { api, normalizeResponse } from '../config/apiConfig'
+import { normalizeResponse } from '../config/apiConfig'
+
+// Codespaces-aware API endpoint with localhost fallback
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME
+const API_URL = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/users/`
+  : 'http://localhost:8000/api/users/'
 
 function Users() {
   const [users, setUsers] = useState([])
@@ -14,7 +20,11 @@ function Users() {
     try {
       setLoading(true)
       setError(null)
-      const data = await api.get('/api/users')
+      const response = await fetch(API_URL)
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`)
+      }
+      const data = await response.json()
       const normalized = normalizeResponse(data)
       setUsers(normalized)
     } catch (err) {
