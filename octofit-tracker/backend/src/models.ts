@@ -1,80 +1,95 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-// Type definitions
 export type ResourceName = 'users' | 'teams' | 'activities' | 'leaderboard' | 'workouts';
 
-export interface ResourceRecord {
-  [key: string]: any;
-}
-
-export interface UserRecord extends ResourceRecord {
+export type UserRecord = {
   name: string;
   email: string;
-  fitnessLevel?: 'beginner' | 'intermediate' | 'advanced';
-}
+  fitnessLevel?: string;
+};
 
-export interface TeamRecord extends ResourceRecord {
+export type TeamRecord = {
   name: string;
-  members: number;
-  sport: string;
-}
+  members?: number;
+  sport?: string;
+};
 
-export interface ActivityRecord extends ResourceRecord {
-  userId: string;
+export type ActivityRecord = {
+  userId: mongoose.Types.ObjectId | string;
   type: string;
-  durationMinutes: number;
-  calories: number;
+  durationMinutes?: number;
+  calories?: number;
   notes?: string;
-}
+};
 
-export interface LeaderboardEntryRecord extends ResourceRecord {
-  userId: string;
+export type LeaderboardRecord = {
+  userId: mongoose.Types.ObjectId | string;
   name: string;
-  score: number;
-}
+  score?: number;
+};
 
-export interface WorkoutRecord extends ResourceRecord {
+export type WorkoutRecord = {
   title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  durationMinutes: number;
-  focusArea: string;
-}
+  difficulty?: string;
+  durationMinutes?: number;
+  focusArea?: string;
+};
 
-// Mongoose Schemas
-const userSchema = new Schema<UserRecord>({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  fitnessLevel: { type: String, enum: ['beginner', 'intermediate', 'advanced'], default: 'beginner' },
-}, { timestamps: true });
+export type ResourceRecord =
+  | UserRecord
+  | TeamRecord
+  | ActivityRecord
+  | LeaderboardRecord
+  | WorkoutRecord;
 
-const teamSchema = new Schema<TeamRecord>({
-  name: { type: String, required: true },
-  members: { type: Number, required: true },
-  sport: { type: String, required: true },
-}, { timestamps: true });
+const userSchema = new Schema<UserRecord>(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    fitnessLevel: { type: String, enum: ['beginner', 'intermediate', 'advanced'], default: 'beginner' },
+  },
+  { timestamps: true },
+);
 
-const activitySchema = new Schema<ActivityRecord>({
-  userId: { type: String, required: true },
-  type: { type: String, required: true },
-  durationMinutes: { type: Number, required: true },
-  calories: { type: Number, required: true },
-  notes: String,
-}, { timestamps: true });
+const teamSchema = new Schema<TeamRecord>(
+  {
+    name: { type: String, required: true },
+    members: { type: Number, default: 0 },
+    sport: { type: String, default: 'general fitness' },
+  },
+  { timestamps: true },
+);
 
-const leaderboardSchema = new Schema<LeaderboardEntryRecord>({
-  userId: { type: String, required: true },
-  name: { type: String, required: true },
-  score: { type: Number, required: true },
-}, { timestamps: true });
+const activitySchema = new Schema<ActivityRecord>(
+  {
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    type: { type: String, required: true },
+    durationMinutes: { type: Number, default: 0 },
+    calories: { type: Number, default: 0 },
+    notes: { type: String, default: '' },
+  },
+  { timestamps: true },
+);
 
-const workoutSchema = new Schema<WorkoutRecord>({
-  title: { type: String, required: true },
-  difficulty: { type: String, enum: ['easy', 'medium', 'hard'], required: true },
-  durationMinutes: { type: Number, required: true },
-  focusArea: { type: String, required: true },
-}, { timestamps: true });
+const leaderboardSchema = new Schema<LeaderboardRecord>(
+  {
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    name: { type: String, required: true },
+    score: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
 
-// Mongoose Models
+const workoutSchema = new Schema<WorkoutRecord>(
+  {
+    title: { type: String, required: true },
+    difficulty: { type: String, enum: ['easy', 'medium', 'hard'], default: 'medium' },
+    durationMinutes: { type: Number, default: 20 },
+    focusArea: { type: String, default: 'full body' },
+  },
+  { timestamps: true },
+);
+
 export const User = mongoose.model('User', userSchema);
 export const Team = mongoose.model('Team', teamSchema);
 export const Activity = mongoose.model('Activity', activitySchema);
